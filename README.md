@@ -125,9 +125,11 @@ plt.show()
 ```
 ## Output Waveform
 <img width="540" height="736" alt="Screenshot 2026-02-20 155553" src="https://github.com/user-attachments/assets/ab208a7d-0d45-4ca0-87ed-4bfd8b1ab305" />
+
 ## Result
 Thus, the colab program for impulse sampling is executed successfully.
 ## 1.3 Natural Sampling
+
 ## Program
 ```
 import numpy as np
@@ -180,5 +182,6 @@ plt.show()
 ```
 ## Output Waveform
 <img width="1160" height="822" alt="image" src="https://github.com/user-attachments/assets/02bc63a5-3457-4889-9fd1-87e78bfb1bc5" />
+
 ## Result 
 Thus, the colab program for Natural sampling is executed successfully.
