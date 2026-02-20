@@ -76,10 +76,10 @@ plt.grid(True)
 plt.tight_layout()
 plt.show()
 ```
-# Output Waveform
+## Output Waveform
 <img width="1168" height="825" alt="image" src="https://github.com/user-attachments/assets/287a491f-c682-4156-8f10-4df2606fce01" />
 
-# Results
+## Results
 Thus, the colab program for flat-top sampling is executed successfully.
 
 ## 1.2 Impulse Sampling
@@ -125,4 +125,60 @@ plt.show()
 ```
 ## Output Waveform
 <img width="540" height="736" alt="Screenshot 2026-02-20 155553" src="https://github.com/user-attachments/assets/ab208a7d-0d45-4ca0-87ed-4bfd8b1ab305" />
-
+## Result
+Thus, the colab program for impulse sampling is executed successfully.
+## 1.3 Natural Sampling
+## Program
+```
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import butter, lfilter
+fs = 1000  # Sampling frequency (samples per second)
+T = 1  # Duration in seconds
+t = np.arange(0, T, 1/fs)  # Time vector
+fm = 5  # Frequency of message signal (Hz)
+message_signal = np.sin(2 * np.pi * fm * t)
+pulse_rate = 50  # pulses per second
+pulse_train = np.zeros_like(t)
+pulse_width = int(fs / pulse_rate / 2)
+for i in range(0, len(t), int(fs / pulse_rate)):
+    pulse_train[i:i+pulse_width] = 1
+nat_signal = message_signal * pulse_train
+sampled_signal = nat_signal[pulse_train == 1]
+sample_times = t[pulse_train == 1]
+# # Interpolation - Zero-Order Hold (just for visualization)
+reconstructed_signal = np.zeros_like(t)
+for i, time in enumerate(sample_times):
+    index = np.argmin(np.abs(t - time))
+    reconstructed_signal[index:index+pulse_width] = sampled_signal[i]
+def lowpass_filter(signal, cutoff, fs, order=5):
+    nyquist = 0.5 * fs
+    normal_cutoff = cutoff / nyquist
+    b, a = butter(order, normal_cutoff, btype='low', analog=False)
+    return lfilter(b, a, signal)
+reconstructed_signal = lowpass_filter(reconstructed_signal,10, fs)
+plt.figure(figsize=(14, 10))
+plt.subplot(4, 1, 1)
+plt.plot(t, message_signal, label='Original Message Signal')
+plt.legend()
+plt.grid(True)
+plt.subplot(4, 1, 2)
+plt.plot(t, pulse_train, label='Pulse Train')
+plt.legend()
+plt.grid(True)
+plt.subplot(4, 1, 3)
+plt.plot(t, nat_signal, label='Natural Sampling')
+plt.legend()
+plt.grid(True)
+plt.subplot(4, 1, 4)
+plt.plot(t, reconstructed_signal, label='Reconstructed Message Signal',
+         color='green')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+```
+## Output Waveform
+<img width="1160" height="822" alt="image" src="https://github.com/user-attachments/assets/02bc63a5-3457-4889-9fd1-87e78bfb1bc5" />
+## Result 
+Thus, the colab program for Natural sampling is executed successfully.
